@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đạt & Huyền - Ký ức Hoa Hướng Dương</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #ff85a2;
+            --sunflower: #ffb703;
+            --bg-gradient: linear-gradient(135deg, #fff0f3 0%, #fffdf0 50%, #e0f4ff 100%);
+            --text-dark: #2b2b2b;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex; flex-direction: column; justify-content: space-between;
+            overflow-x: hidden; position: relative;
+        }
+        .container {
+            max-width: 750px; width: 90%; margin: 40px auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px; border-radius: 35px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            position: relative; text-align: center; z-index: 10;
+        }
+        .header-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem; color: #1a1a1a; margin-bottom: 10px;
+        }
+        .header-title span { color: var(--sunflower); }
+        .subtitle { color: #666; font-size: 0.95rem; margin-bottom: 30px; }
+
+        /* Notebook Pages */
+        .page { display: none; text-align: left; animation: fadeIn 0.4s ease; }
+        .page.active { display: block; }
+        
+        .page h3 {
+            font-family: 'Playfair Display', serif; font-size: 1.5rem;
+            color: #ff5c8a; margin-bottom: 15px; border-bottom: 2px dashed #ffe5ec; padding-bottom: 8px;
+        }
+        .page p { color: #444; line-height: 1.8; margin-bottom: 15px; font-size: 1.05rem; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Navigation Buttons inside book */
+        .nav-buttons {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;
+        }
+        .btn {
+            background: #ff5c8a; color: white; border: none; padding: 10px 25px;
+            border-radius: 25px; cursor: pointer; font-weight: 600; transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(255,92,138,0.3);
+        }
+        .btn:hover { background: #ff3366; transform: translateY(-2px); }
+        .btn:disabled { background: #ddd; cursor: not-allowed; box-shadow: none; transform: none; }
+        .page-indicator { font-weight: 600; color: #888; }
+
+        /* Counter Section */
+        .counter-box {
+            background: #fff0f3; padding: 25px; border-radius: 20px; text-align: center; margin-top: 20px;
+        }
+        .counter-number { font-family: 'Playfair Display', serif; font-size: 3rem; color: #ff5c8a; font-weight: 700; }
+
+        /* Interactive mini question */
+        .interactive-box {
+            background: #fffdf0; border: 2px solid #ffb703; padding: 20px; border-radius: 20px; margin-top: 20px; text-align: center;
+        }
+        .interactive-box p { font-weight: 600; margin-bottom: 10px; color: #333; }
+        .choice-btn {
+            background: white; border: 2px solid #ffb703; padding: 8px 18px; border-radius: 20px;
+            cursor: pointer; margin: 5px; font-weight: 600; color: #b8860b; transition: 0.3s; font-size: 0.9rem;
+        }
+        .choice-btn:hover { background: #ffb703; color: white; }
+        .result-text { margin-top: 10px; font-weight: 600; font-size: 0.95rem; }
+
+        /* Secret Box Button */
+        .secret-container { text-align: center; margin-top: 20px; }
+        .secret-btn {
+            background: linear-gradient(135deg, #ffb703 0%, #ff85a2 100%);
+            color: white; border: none; padding: 12px 25px; border-radius: 30px;
+            font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(255,183,3,0.3);
+            transition: 0.3s;
+        }
+        .secret-btn:hover { transform: scale(1.05); }
+        .secret-message {
+            display: none; background: #fff0f3; border: 2px dashed #ff5c8a;
+            padding: 15px; border-radius: 15px; margin-top: 15px; font-style: italic; color: #d63384; line-height: 1.6;
+        }
+
+        /* Floating Hearts Animation */
+        .heart {
+            position: absolute; color: #ff5c8a; font-size: 1.5rem;
+            animation: floatUp 4s linear infinite; z-index: 1; opacity: 0.7;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+        }
+
+        footer { text-align: center; padding: 20px; color: #777; font-size: 0.9rem; z-index: 10; }
+    </style>
+</head>
+<body>
+
+    <!-- Các trái tim bay nền -->
+    <div class="heart" style="left: 10%; animation-delay: 0s;">❤️</div>
+    <div class="heart" style="left: 30%; animation-delay: 2s;">🌻</div>
+    <div class="heart" style="left: 70%; animation-delay: 1s;">💖</div>
+    <div class="heart" style="left: 85%; animation-delay: 3s;">🐱</div>
+
+    <div class="container">
+        <h1 class="header-title">Cuốn Sổ Nhỏ Của <span>Đạt & Huyền</span> 🌻</h1>
+        <p class="subtitle">Lật từng trang để khám phá câu chuyện của chúng mình nhé 🐱</p>
+
+        <!-- PAGE 1 -->
+        <div class="page active" id="page-1">
+            <h3>Trang 1: Cuối tháng 4 — Ngày em xuất hiện</h3>
+            <p>Anh biết em vào cuối tháng 4 năm 2026, vào một dịp đặc biệt mà có lẽ sau này anh vẫn sẽ nhớ mãi.</p>
+            <p>Sau đó chúng ta kết bạn Facebook rồi bắt đầu nhắn tin với nhau. Ngay từ đầu anh đã biết em không chỉ nói chuyện với riêng anh, có những lựa chọn khác, những phương án dự phòng ngoài kia.</p>
+            <p>Anh biết rõ điều đó. Nhưng thay vì bước đi, anh lại chọn ở lại. Có lẽ vì ngay từ lúc đó, tình cảm anh dành cho em đã lớn hơn anh tưởng tượng rất nhiều...</p>
+        </div>
+
+        <!-- PAGE 2 -->
+        <div class="page" id="page-2">
+            <h3>Trang 2: 08.06.2026 — Lời khẳng định</h3>
+            <p>Ngày 8 tháng 6 năm 2026, chúng ta bắt đầu xác định mối quan hệ chính thức. Từ hai người qua khung chat bỗng hóa thành một phần không thể thiếu trong cuộc sống của nhau.</p>
+            <p>Anh bước vào thế giới của em với một tâm niệm rất rõ ràng: <strong>Anh thật lòng với em tuyệt đối</strong>.</p>
+            <p>Dẫu biết trong thời gian ấy em vẫn giữ liên lạc với những người nam khác, anh chọn im lặng. Không phải vì anh vô tâm hay không biết buồn, mà vì anh không muốn ép buộc, anh muốn đợi xem em tự nhận ra điều gì mới thực sự đáng giữ trong lòng.</p>
+        </div>
+
+        <!-- PAGE 3 -->
+        <div class="page" id="page-3">
+            <h3>Trang 3: Cuối tháng 8 — Cơn dông bão</h3>
+            <p>Cuối tháng 8, em về quê. Những ngày tháng đó, anh biết em đi đâu, làm gì và ở cùng ai.</p>
+            <p>Có những chuyện làm tim anh thắt lại nhưng anh vẫn chọn cách nhắc nhở em thật nhẹ nhàng. Không phải vì anh sợ tranh cãi, mà vì anh sợ nếu làm căng thẳng, chúng ta sẽ buông tay nhau vì một người không xứng đáng.</p>
+            <p>Cho đến khi lên Sài Gòn mà mọi chuyện vẫn tiếp diễn, anh biết mình không thể im lặng thêm được nữa. Trái tim có độ bền của nó, anh muốn em hiểu rằng phía sau sự im lặng của anh chưa bao giờ là sự vô tâm, mà là một người đang cố hết sức để giữ lấy người mình thương.</p>
+        </div>
+
+        <!-- PAGE 4 -->
+        <div class="page" id="page-4">
+            <h3>Trang 4: Thử Thách Độ Thấu Hiểu 🧠✨</h3>
+            
+            <div class="interactive-box">
+                <p>Câu 1: Lúc Đạt im lặng không nói gì khi giận, thực chất Đạt đang nghĩ gì?</p>
+                <button class="choice-btn" onclick="answerQ(1, 'A')">A. Đang bơ cho qua chuyện</button>
+                <button class="choice-btn" onclick="answerQ(1, 'B')">B. Kìm nén để bảo vệ tình yêu</button>
+                <button class="choice-btn" onclick="answerQ(1, 'C')">C. Đang mải chơi game</button>
+                <div id="res-1" class="result-text"></div>
+            </div>
+
+            <div class="interactive-box">
+                <p>Câu 2: Tại sao Đạt lại ví Huyền là hoa hướng dương?</p>
+                <button class="choice-btn" onclick="answerQ(2, 'A')">A. Vì Huyền thích màu vàng</button>
+                <button class="choice-btn" onclick="answerQ(2, 'B')">B. Vì Huyền luôn rực rỡ và hướng về mặt trời</button>
+                <button class="choice-btn" onclick="answerQ(2, 'C')">C. Vì nhìn mặt Huyền giống bông hoa</button>
+                <div id="res-2" class="result-text"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 5 -->
+        <div class="page" id="page-5">
+            <h3>Trang cuối: Kỷ niệm & Lời nhắn nhủ</h3>
+            <p>Hành trình chúng ta đi qua không dài nhưng đủ để hiểu lòng nhau. Nơi đây đếm từng ngày bình yên kể từ cột mốc chính thức:</p>
+            
+            <div class="counter-box">
+                <p style="font-size: 0.9rem; color: #666; font-weight: 600; margin-bottom: 5px;">HÀNH TRÌNH BÊN NHAU</p>
+                <div class="counter-number" id="days-count">...</div>
+                <p style="font-weight: 600; margin-top: 5px; color: #ff5c8a; font-size: 1rem;">NGÀY YÊU THƯƠNG 🌻🐱</p>
+            </div>
+
+            <div class="secret-container">
+                <button class="secret-btn" onclick="toggleSecret()">🎁 Bấm vào đây để mở hộp mật mã của Đạt</button>
+                <div id="secret-box" class="secret-message">
+                    "Gửi Huyền: Dù có chuyện gì xảy ra đi nữa, cảm ơn em vì cuối cùng đã chọn ở lại và nắm tay Đạt. Hướng dương luôn hướng về mặt trời, còn anh thì luôn hướng về em! ❤️🌻"
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="nav-buttons">
+            <button class="btn" id="prev-btn" onclick="changePage(-1)" disabled>Trang trước</button>
+            <span class="page-indicator" id="indicator">Trang 1 / 5</span>
+            <button class="btn" id="next-btn" onclick="changePage(1)">Trang sau</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>Made with all my love for Huyền 🌻 — Đạt &nbsp;|&nbsp; 2026 =))))</p>
+    </footer>
+
+    <script>
+        let currentPage = 1;
+        const totalPages = 5;
+
+        function changePage(direction) {
+            document.getElementById(`page-${currentPage}`).classList.remove('active');
+            currentPage += direction;
+            document.getElementById(`page-${currentPage}`).classList.add('active');
+
+            document.getElementById('prev-btn').disabled = (currentPage === 1);
+            document.getElementById('next-btn').disabled = (currentPage === totalPages);
+            document.getElementById('indicator').innerText = `Trang ${currentPage} / ${totalPages}`;
+        }
+
+        function answerQ(qNum, choice) {
+            const resDiv = document.getElementById(`res-${qNum}`);
+            if (qNum === 1) {
+                if (choice === 'B') {
+                    resDiv.style.color = '#28a745';
+                    resDiv.innerHTML = "Quá chuẩn! ❤️ Đạt nhịn không phải vì không biết buồn đâu nha.";
+                } else {
+                    resDiv.style.color = '#dc3545';
+                    resDiv.innerHTML = "Sai bét gùi, chọn lại đi đồ ngốc =))))";
+                }
+            } else if (qNum === 2) {
+                if (choice === 'B') {
+                    resDiv.style.color = '#28a745';
+                    resDiv.innerHTML = "Chính xác tuyệt đối! Nụ cười của Huyền tỏa nắng thế cơ mà 🌻";
+                } else {
+                    resDiv.style.color = '#dc3545';
+                    resDiv.innerHTML = "Sai rồi, đoán linh tinh phạt quỳ gối bi giờ =))))";
+                }
+            }
+        }
+
+        function toggleSecret() {
+            const box = document.getElementById('secret-box');
+            if (box.style.display === 'block') {
+                box.style.display = 'none';
+            } else {
+                box.style.display = 'block';
+            }
+        }
+
+        const startDate = new Date('2026-06-08');
+        const today = new Date();
+        const diffTime = today - startDate;
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        document.getElementById('days-count').innerText = diffDays >= 0 ? diffDays : 0;
+    </script>
+</body>
+</html>
